@@ -1,6 +1,6 @@
 package com.example.blog.controller;
 
-import com.example.blog.entity.ReactionType;
+import com.example.blog.dto.ReactionRequest;
 import com.example.blog.service.ReactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class ReactionController {
     @PostMapping("/{pinId}")
     public ResponseEntity<String> reactToPin(
             @PathVariable Long pinId,
-            @RequestParam ReactionType type,
+            @RequestBody ReactionRequest reactionRequest,
             Authentication authentication) {
 
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -25,7 +25,7 @@ public class ReactionController {
         }
 
         String username = authentication.getName();
-        reactionService.reactToPin(username, pinId, type);
+        reactionService.reactToPin(username, pinId, reactionRequest.getType());
 
         return ResponseEntity.ok("Reaction saved and added to favourites");
     }

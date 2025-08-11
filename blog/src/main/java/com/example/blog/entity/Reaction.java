@@ -25,4 +25,3 @@ public class Reaction {
     @JoinColumn(name = "user_id")
     private User user;
 }
-
