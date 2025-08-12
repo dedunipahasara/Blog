@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class JwtUtil {
@@ -16,6 +18,8 @@ public class JwtUtil {
 
     @Value("${jwt.expiration}")
     private long EXPIRATION;
+
+    private final Set<String> tokenBlacklist = new HashSet<>();
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET.getBytes());
@@ -41,11 +45,21 @@ public class JwtUtil {
 
     public boolean validateToken(String token) {
         try {
+            if (isTokenBlacklisted(token)) {
+                return false;  // Token is blacklisted (logged out)
+            }
             Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
             return true;
         } catch (JwtException e) {
-            // You can log the exception here if needed
             return false;
         }
+    }
+
+    public void blacklistToken(String token) {
+        tokenBlacklist.add(token);
+    }
+
+    public boolean isTokenBlacklisted(String token) {
+        return tokenBlacklist.contains(token);
     }
 }

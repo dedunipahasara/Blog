@@ -1,12 +1,12 @@
 package com.example.blog.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 @Entity
 @Getter
@@ -29,36 +29,36 @@ public class User implements UserDetails {
     @Column(nullable=false)
     private String password;
 
-    // Profile fields
+    private boolean verified;
+
+    private String verificationCode;
+
+    private String otp;
+
     private String fullName;
     private String bio;
     private String profileImageUrl;
 
-    // UserDetails interface methods implementation
+    @ManyToMany
+    @JoinTable(
+        name = "user_following",
+        joinColumns = @JoinColumn(name = "follower_id"),
+        inverseJoinColumns = @JoinColumn(name = "following_id")
+    )
+    @JsonIgnore
+    private Set<User> following = new HashSet<>();
+
+    @ManyToMany(mappedBy = "following")
+    @JsonIgnore
+    private Set<User> followers = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // For simplicity, give all users ROLE_USER
         return Collections.singleton(() -> "ROLE_USER");
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true; // customize if you want
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true; // customize if you want
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true; // customize if you want
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true; // customize if you want
-    }
+    @Override public boolean isAccountNonExpired() { return true; }
+    @Override public boolean isAccountNonLocked() { return true; }
+    @Override public boolean isCredentialsNonExpired() { return true; }
+    @Override public boolean isEnabled() { return true; }
 }

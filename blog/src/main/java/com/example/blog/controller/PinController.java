@@ -1,10 +1,10 @@
 package com.example.blog.controller;
 
-
 import com.example.blog.entity.Pin;
 import com.example.blog.entity.User;
 import com.example.blog.repository.PinRepository;
 import com.example.blog.repository.UserRepository;
+import com.example.blog.service.PinService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -12,7 +12,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.time.LocalDateTime;
@@ -25,13 +24,15 @@ public class PinController {
 
     private final PinRepository pinRepository;
     private final UserRepository userRepository;
+    private final PinService pinService;
 
     @Value("${uploads.dir:uploads}")
     private String uploadsDir;
 
-    public PinController(PinRepository pinRepository, UserRepository userRepository) {
+    public PinController(PinRepository pinRepository, UserRepository userRepository, PinService pinService) {
         this.pinRepository = pinRepository;
         this.userRepository = userRepository;
+        this.pinService = pinService;
     }
 
     @GetMapping
@@ -64,7 +65,6 @@ public class PinController {
 
         String generated = UUID.randomUUID().toString() + ext;
 
-        // Create uploads dirs if not exist
         Path uploadPath = Paths.get(uploadsDir).toAbsolutePath().normalize();
         if (!Files.exists(uploadPath)) Files.createDirectories(uploadPath);
 
@@ -78,7 +78,6 @@ public class PinController {
                 .title(title)
                 .description(description)
                 .category(category)
-                // Serve via /uploads/{filename} (see WebConfig)
                 .mediaUrl("/uploads/" + generated)
                 .mediaType(mediaType)
                 .createdAt(LocalDateTime.now())
@@ -95,5 +94,12 @@ public class PinController {
         return pinRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    // ✅ This endpoint MUST be public (no auth required)
+    @GetMapping("/{id}/share")
+    public ResponseEntity<?> getShareLinks(@PathVariable Long id) {
+        String baseUrl = "http://localhost:8080"; // Use env or config in real app
+        return ResponseEntity.ok(pinService.generateShareLinks(id, baseUrl));
     }
 }

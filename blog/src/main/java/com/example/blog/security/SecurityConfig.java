@@ -2,6 +2,7 @@ package com.example.blog.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,7 +22,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
@@ -30,13 +33,22 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http
+            .csrf().disable()
             .authorizeHttpRequests()
-            .requestMatchers("/api/auth/**", "/uploads/**", "/api/pins", "/api/pins/**").permitAll()
-            .anyRequest().authenticated()
+                // Public share link endpoint (no auth)
+                .requestMatchers(HttpMethod.GET, "/api/pins/*/share").permitAll()
+                // All other GET requests to /api/pins/** require auth
+                .requestMatchers(HttpMethod.GET, "/api/pins/**").authenticated()
+                // Public access to auth endpoints and uploads folder
+                .requestMatchers(HttpMethod.GET, "/api/auth/**", "/uploads/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                // Other requests require auth
+                .anyRequest().authenticated()
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+        // Add JWT filter before username/password auth filter
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

@@ -1,6 +1,5 @@
 package com.example.blog.service;
 
-
 import com.example.blog.entity.Pin;
 import com.example.blog.entity.User;
 import com.example.blog.repository.PinRepository;
@@ -10,9 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.*;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class PinService {
@@ -69,5 +66,20 @@ public class PinService {
 
     public void deletePin(Long id) {
         pinRepository.deleteById(id);
+    }
+
+    // Share links generator
+    public Map<String, String> generateShareLinks(Long pinId, String baseUrl) {
+        Pin pin = pinRepository.findById(pinId)
+                .orElseThrow(() -> new RuntimeException("Pin not found"));
+
+        String pinUrl = baseUrl + "/pins/" + pinId;
+
+        Map<String, String> shareLinks = new HashMap<>();
+        shareLinks.put("whatsapp", "https://api.whatsapp.com/send?text=" + pinUrl);
+        shareLinks.put("facebook", "https://www.facebook.com/sharer/sharer.php?u=" + pinUrl);
+        shareLinks.put("link", pinUrl);
+
+        return shareLinks;
     }
 }
