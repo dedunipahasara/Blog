@@ -1,0 +1,545 @@
+{
+	"info": {
+		"_postman_id": "2a7d6d7a-05dd-4600-8fc9-57285c075116",
+		"name": "Blog",
+		"description": "This is a backend testing part for blog website .users can upload a pins(images,video) other users can view it can react to apin ,comment to a pin, share pins and follow users who uploaded the pins",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36188584"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"pahasara\",\n    \"email\": \"pahasarakarunarathna69@gmail.com\",\n    \"password\": \"zaara@1234\",\n    \"fullName\": \" pahasara karunarathna\",\n    \"bio\": \"peaceful girl\",\n    \"profileImageUrl\": \"https://pin.it/51NJsmDd1\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				},
+				"description": "we have to put actual email address to register this blog website. if we havent put a acutual email we cant register and get 404 error\n\n<img src=\"https://content.pstmn.io/66887b78-281c-43a6-ba7c-a3a1df37a8cc/cmVnaXN0ZXJpbmdfdXNlcl90b190aGVfYmxvZy5wbmc=\" alt=\"\">\n\n<img src=\"https://content.pstmn.io/cbd5f74b-be09-4840-8342-608848dc6f79/Z2V0dGluZ19lbWFpbF90b19yZWdpc3Rlcl9zdWNjZXNzZnVsX2VtYWlsLnBuZw==\" alt=\"\">\n\n<img src=\"https://content.pstmn.io/e2f738ae-30b7-4397-bba9-74c87326bcfc/Z2V0dGluZ19lbWFpbF92ZXJpZmljYXRpb25fbGluay5wbmc=\" alt=\"\">"
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"duni\",\n    \"password\": \"deduni@1234\"\n   \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				},
+				"description": "before login we have to veify our email. email verify link send to our gmail account .after verifying emaol account we can login. we have to put correct username and password in raw jason\n\n<img src=\"https://content.pstmn.io/5974f88c-c86b-40c3-9756-6989017c9275/bG9naW5fdXNlcl9nZXR0aW5nX3Rva2VuLnBuZw==\" alt=\"\">"
+			},
+			"response": []
+		},
+		{
+			"name": "post apin",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkdW5pIiwiaWF0IjoxNzU0OTYyNzU0LCJleHAiOjE3NTU1Njc1NTR9.BcCYKifZQyzFAPoJjnS-KbNbNEfgXDupa1ndMmwagXQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"description": "this is a video",
+							"type": "file",
+							"src": "postman-cloud:///1f075c0d-690a-4660-935f-bd90d1bfd56b"
+						},
+						{
+							"key": "title",
+							"value": "My first pin",
+							"description": "title dis",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "My description",
+							"description": "didcriptionabout the file type is video",
+							"type": "text"
+						},
+						{
+							"key": "category",
+							"value": "videos",
+							"description": "video cat",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/pins",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"pins"
+					]
+				},
+				"description": "afte rlogin we have to create the profile first . after create profile we can post a pin . we can upload image or video for this in form-data\n\n<img src=\"https://content.pstmn.io/5760b488-0595-48c0-bb1a-0f33c61bd15c/dXNlcl91cGxvYWRpbmdfYSBfcGluX3RvX2Jsb2cucG5n\" alt=\"\">"
+			},
+			"response": []
+		},
+		{
+			"name": "post comment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwYWhhc2FyYSIsImlhdCI6MTc1NDk2MzA3MiwiZXhwIjoxNzU1NTY3ODcyfQ.CALLvM980wfmx_x7Ed8l87dQmrtshtlxjvOMbEDFyjk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"🥰🥰🥰🥰\"\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/comments/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"comments",
+						"1"
+					]
+				},
+				"description": "user who created pin and other users can comment to the pin .\n\n<img src=\"https://content.pstmn.io/7ecc87c8-a7ee-4f9d-8749-7c506eac24a3/YWRkaW5nX2NvbW1lbnRfdG9fcGluLnBuZw==\" alt=\"\">"
+			},
+			"response": []
+		},
+		{
+			"name": "get all comments",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkdW5pIiwiaWF0IjoxNzU0OTYzNTU4LCJleHAiOjE3NTU1NjgzNTh9.ekZ23TXm_55uiZppoEmXmRddzO15eUAd8OY8Mu6UVp4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/comments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getting aprofile",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwYWhhc2FyYSIsImlhdCI6MTc1NDk2MzA3MiwiZXhwIjoxNzU1NTY3ODcyfQ.CALLvM980wfmx_x7Ed8l87dQmrtshtlxjvOMbEDFyjk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\":2,\n    \"username\": \"thamasha\",\n    \"email\": \"thamashadeduni@gmail.com\",\n    \"password\": \"thama@1234\",\n    \"fullName\": \"thamasha deduni\",\n    \"bio\": \"kdrma lover\",\n    \"profileImageUrl\": \"https://pin.it/2lss3FqsV\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/profile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"profile"
+					]
+				},
+				"description": "creating the profile\n\n<img src=\"https://content.pstmn.io/8d21a796-61d9-4dd5-b502-b311ccf0472f/Z2V0dGluZ19wcm9maWxlLnBuZw==\" alt=\"\">"
+			},
+			"response": []
+		},
+		{
+			"name": "add reaction to pin",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwYWhhc2FyYSIsImlhdCI6MTc1NDk3MzE4OSwiZXhwIjoxNzU1NTc3OTg5fQ.pTJrPS8dJLNQRzwOlMsMK421yafm9LvqHybOHurjinw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"HEART\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/reactions/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"reactions",
+						"1"
+					]
+				},
+				"description": "user who created pin and other users canreact to the pins\n\n<img src=\"https://content.pstmn.io/62ebdccb-18e2-40b2-b6e1-ef22295dabeb/YWRkaW5nX2FfcmVhY3Rpb25fdG9fcGluLnBuZw==\" alt=\"\">"
+			},
+			"response": []
+		},
+		{
+			"name": "verify email",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/auth/verify?code=5b5837d8-5ed4-495b-bd26-6b4c61e86f25",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"verify"
+					],
+					"query": [
+						{
+							"key": "code",
+							"value": "5b5837d8-5ed4-495b-bd26-6b4c61e86f25"
+						}
+					]
+				},
+				"description": "getting link from email for verifying email\n\n<img src=\"https://content.pstmn.io/2540d334-e157-4b38-9394-118caaaaf5e0/ZW1haWxfdmVyaWZpZWRfc3VjY2Vzc2Z1bGx5LnBuZw==\" alt=\"\">"
+			},
+			"response": []
+		},
+		{
+			"name": "changing password",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkdW5pIiwiaWF0IjoxNzU0OTcyMDAyLCJleHAiOjE3NTU1NzY4MDJ9.I-YeFTjPi_IoYiGImTjln1ZXGCE4b7sRVpbT85Km9-s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"currentPassword\": \"duni@1234\",\n  \"newPassword\": \"dedu@1234\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/change-password",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"change-password"
+					]
+				},
+				"description": "**we can change password like this when we remember our current password . we have to use our token for this**\n\n<img src=\"https://content.pstmn.io/4e49cfe6-6875-45ba-bf62-673340a506f4/Y2hhbmdlX3Bhc3N3b3JkX3dpdGhfdG9rZW5fd2hlbl93ZV9yZW1lbWJlcmRfY3VycmVudF9wYXNzd29yZC5wbmc=\" alt=\"\">"
+			},
+			"response": []
+		},
+		{
+			"name": "fogot password send otp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/auth/forgot-password/send-otp?email=dunibandara41@gmail.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"forgot-password",
+						"send-otp"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "dunibandara41@gmail.com"
+						}
+					]
+				},
+				"description": "when we forgot our password we can send otp to email\n\n<img src=\"https://content.pstmn.io/d6bf2f4d-764a-458c-b25d-cf2e049cc037/c2VuZF9vdHBfdG9fZW1haWwucG5n\" alt=\"\">\n\n<img src=\"https://content.pstmn.io/4d43ed8b-35b4-4355-a199-0a8899871d7e/c3VjY2Vzc2Z1bGx5X3NlbnRfb3RwX3RvX2VtYWlsX2FkZHJlc3MucG5n\" alt=\"\">"
+			},
+			"response": []
+		},
+		{
+			"name": "forgot password verify otp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"dunibandara41@gmail.com\",\n  \"otp\": \"529746\",\n  \"newPassword\": \"deduni@1234\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/forgot-password/verify-otp",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"forgot-password",
+						"verify-otp"
+					]
+				},
+				"description": "after sending otp to email. use that six digit code for changing new password\n\n<img src=\"https://content.pstmn.io/86466b3f-cb16-4328-956b-b53ecf5b4491/Y2hhbmdlX3Bhc3N3b3JkX2J5X2ZvcmdldF9wYXNzd29yZF9vdHAucG5n\" alt=\"\">"
+			},
+			"response": []
+		},
+		{
+			"name": "share  a pin",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/pins/1/share",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"pins",
+						"1",
+						"share"
+					]
+				},
+				"description": "we can share a pin too. options whatsapp facebook copylink\n\n<img src=\"https://content.pstmn.io/c36e686b-7476-442f-9478-d0f4199676e5/c2hhcmVfYV9waW4ucG5n\" alt=\"\">"
+			},
+			"response": []
+		},
+		{
+			"name": "Follow a user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkdW5pIiwiaWF0IjoxNzU0OTczNDg3LCJleHAiOjE3NTU1NzgyODd9.fghMVKouBLvBpT2LAizZxDH-_bSBZXBztfEm-QKXbSk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/profile/follow/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"profile",
+						"follow",
+						"2"
+					]
+				},
+				"description": "we can follow a other users by using thier token\n\n<img src=\"https://content.pstmn.io/b058a5a8-3014-432e-8f9e-e2ea1b13cae0/Zm9sbG93X2FfdXNlci5wbmc=\" alt=\"\">"
+			},
+			"response": []
+		},
+		{
+			"name": "logout a user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkdW5pIiwiaWF0IjoxNzU0OTcyMDAyLCJleHAiOjE3NTU1NzY4MDJ9.I-YeFTjPi_IoYiGImTjln1ZXGCE4b7sRVpbT85Km9-s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/auth/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"logout"
+					]
+				},
+				"description": "when we not using this blog we can logout\n\n<img src=\"https://content.pstmn.io/6f2dd39d-7dd7-4df1-8f22-6b81add14d6b/dXNlcl9sb2dnb3V0X3BhcnQucG5n\" alt=\"\">"
+			},
+			"response": []
+		},
+		{
+			"name": "update profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkdW5pIiwiaWF0IjoxNzU0OTcyMDAyLCJleHAiOjE3NTU1NzY4MDJ9.I-YeFTjPi_IoYiGImTjln1ZXGCE4b7sRVpbT85Km9-s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"fullName\": \"deduni zara\",\n  \"bio\": \"I love nature\",\n  \"profileImageUrl\": \"https://pin.it/1Ep0uF5kU\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/profile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"profile"
+					]
+				},
+				"description": "we can update our profile by using token\n\n<img src=\"https://content.pstmn.io/d490fa5b-03f6-4d79-a232-a5e49ff573e3/dXBkYXRlX3VzZXJfcHJvZmlsZS5wbmc=\" alt=\"\">"
+			},
+			"response": []
+		}
+	]
+}
