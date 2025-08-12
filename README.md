@@ -25,19 +25,29 @@ Body
 raw (json)
 json
 {
+
     "username": "pahasara",
+    
     "email": "pahasarakarunarathna69@gmail.com",
+    
     "password": "zaara@1234",
+    
     "fullName": " pahasara karunarathna",
+    
     "bio": "peaceful girl",
+    
     "profileImageUrl": "https://pin.it/51NJsmDd1"
+    
 }
 
 
 
 POST
+
 login
+
 http://localhost:8080/api/auth/login
+
 before login we have to veify our email. email verify link send to our gmail account .after verifying emaol account we can login. we have to put correct username and password in raw jason
 
 <img width="1504" height="725" alt="login_user_getting_token" src="https://github.com/user-attachments/assets/d1e30da7-7605-4af0-a133-745065dab2ac" />
@@ -47,7 +57,9 @@ Body
 raw (json)
 json
 {
+
     "username": "duni",
+    
     "password": "deduni@1234"
    
 }
@@ -55,6 +67,7 @@ json
 
 
 POST
+
 post a pin
 
 http://localhost:8080/api/pins
@@ -65,7 +78,6 @@ afte rlogin we have to create the profile first . after create profile we can po
 
 
 ﻿
-﻿
 
 Authorization
 Bearer Token
@@ -73,6 +85,7 @@ Token
 <token>
 Body
 form-data
+
 file
 postman-cloud:///1f075c0d-690a-4660-935f-bd90d1bfd56b
 this is a video
@@ -91,8 +104,11 @@ video cat
 
 
 POST
+
 post comment
+
 http://localhost:8080/comments/1
+
 user who created pin and other users can comment to the pin .
 
 <img width="1486" height="911" alt="adding_comment_to_pin" src="https://github.com/user-attachments/assets/41b6b621-37b2-4b46-b9a1-2c7991a9f22b" />
@@ -104,12 +120,15 @@ Token
 <token>
 Body
 raw (json)
+
 json
 "🥰🥰🥰🥰"
 
 
 GET
+
 get all comments
+
 http://localhost:8080/api/comments
 ﻿
 
@@ -120,7 +139,9 @@ Token
 
 
 GET
+
 getting aprofile
+
 http://localhost:8080/api/profile
 
 creating the profile
@@ -137,16 +158,23 @@ raw (json)
 json
 {
     "id":2,
+    
     "username": "thamasha",
+    
     "email": "thamashadeduni@gmail.com",
+    
     "password": "thama@1234",
+    
     "fullName": "thamasha deduni",
+    
     "bio": "kdrma lover",
+    
     "profileImageUrl": "https://pin.it/2lss3FqsV"
 }
 
 
 POST
+
 add reaction to pin
 
 http://localhost:8080/api/reactions/1
@@ -166,12 +194,19 @@ Token
 Body
 raw (json)
 json
+
 {
+    
     "type": "HEART"
+    
 }
+
 GET
+
 verify email
+
 http://localhost:8080/api/auth/verify?code=5b5837d8-5ed4-495b-bd26-6b4c61e86f25
+
 getting link from email for verifying email
 
 <img width="1492" height="723" alt="email_verified_successfully" src="https://github.com/user-attachments/assets/d33f8f0f-cce5-4123-90b8-98eabec6d5b0" />
@@ -183,6 +218,7 @@ code
 
 
 POST
+
 changing password
 
 http://localhost:8080/api/auth/change-password
@@ -202,12 +238,16 @@ Body
 raw (json)
 json
 {
+  
   "currentPassword": "duni@1234",
+  
   "newPassword": "dedu@1234"
+  
 }
 
 
 POST
+
 fogot password send otp
 
 http://localhost:8080/api/auth/forgot-password/send-otp?email=dunibandara41@gmail.com
@@ -238,9 +278,13 @@ Body
 raw (json)
 json
 {
+
   "email": "dunibandara41@gmail.com",
+  
   "otp": "529746",
+  
   "newPassword": "deduni@1234"
+  
 }
 
 
@@ -296,14 +340,19 @@ Authorization
 Bearer Token
 Token
 <token>
+
+
 PUT
+
 update profile
+
 http://localhost:8080/api/profile
+
 we can update our profile by using token
 
+<img width="1495" height="907" alt="update_user_profile" src="https://github.com/user-attachments/assets/c45fd6fb-4d77-4c76-94b7-c3c2a56aa0f4" />
 
-﻿
-﻿
+
 
 Authorization
 Bearer Token
@@ -313,7 +362,11 @@ Body
 raw (json)
 json
 {
+
   "fullName": "deduni zara",
+  
   "bio": "I love nature",
+  
   "profileImageUrl": "https://pin.it/1Ep0uF5kU"
+  
 }
