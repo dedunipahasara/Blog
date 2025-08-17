@@ -1,43 +1,96 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useStore } from '../store';
-import { FaDownload } from 'react-icons/fa'; 
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore";
+import { useState, useEffect } from "react";
+import axios from "../api/axios";
 
 export default function PinCard({ pin }) {
-  const { user } = useStore();
-  const isVideo = pin.mediaType === 'video';
+  const navigate = useNavigate();
+  const { user: authUser } = useAuthStore();
+  const isVideo = pin.fileType?.includes("video"); 
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  useEffect(() => {
+    const checkFollowing = async () => {
+      if (!authUser || !pin.author || authUser.id === pin.author.id) return;
+      try {
+        const res = await axios.get(`/profile/${pin.author.id}/followers`);
+        setIsFollowing(res.data.some(f => f.id === authUser.id));
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    checkFollowing();
+  }, [authUser, pin.author]);
+
+  const handleFollow = async (e) => {
+    e.stopPropagation(); 
+    try {
+      if (isFollowing) {
+        await axios.post(`/profile/unfollow/${pin.author.id}`);
+      } else {
+        await axios.post(`/profile/follow/${pin.author.id}`);
+      }
+      setIsFollowing(!isFollowing);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
-    <div className="relative group cursor-zoom-in rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200">
-      <Link to={`/pins/${pin.id}`} className="block">
-        {isVideo ? (
-          <video src={pin.mediaUrl} className="w-full h-full object-cover" autoPlay muted loop />
-        ) : (
-          <img src={pin.mediaUrl} alt={pin.title} className="w-full h-full object-cover" />
+    <div
+      className="rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl cursor-pointer bg-white dark:bg-gray-900 transition-all duration-300"
+      onClick={() => navigate(`/pin/${pin.id}`)}
+    >
+      {/* Media */}
+      {isVideo ? (
+        <video
+          src={pin.fileUrl}
+          className="w-full h-64 object-cover rounded-t-3xl"
+          controls
+          muted
+          loop
+          playsInline
+        />
+      ) : (
+        <img
+          src={pin.fileUrl}
+          alt={pin.title}
+          className="w-full h-64 object-cover rounded-t-3xl"
+        />
+      )}
+
+      {/* Pin info */}
+      <div className="p-4 space-y-2">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 truncate">{pin.title}</h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{pin.category}</p>
+
+        {/* Uploader info + follow */}
+        {pin.author && (
+          <div className="flex items-center justify-between mt-2">
+            <div className="flex items-center gap-2">
+              <img
+                src={pin.author.profileImageUrl || "/default-avatar.png"}
+                alt={pin.author.username}
+                className="w-8 h-8 rounded-full object-cover"
+              />
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                @{pin.author.username}
+              </span>
+            </div>
+            {authUser && authUser.id !== pin.author.id && (
+              <button
+                onClick={handleFollow}
+                className={`px-4 py-1 rounded-2xl font-semibold text-white transition-all duration-300 shadow ${
+                  isFollowing 
+                    ? "bg-gray-500 hover:bg-gray-600"
+                    : "bg-gradient-to-r from-green-500 to-lime-400 hover:from-green-600 hover:to-lime-500"
+                }`}
+              >
+                {isFollowing ? "Following" : "Follow"}
+              </button>
+            )}
+          </div>
         )}
-      </Link>
-      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex flex-col justify-between p-3">
-        {/* Top right corner actions */}
-        <div className="flex justify-end space-x-2">
-          {/* Save button (or similar action) */}
-          <button className="bg-red-600 text-white font-bold py-2 px-4 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-            Save
-          </button>
-          {/* Download button */}
-          <a
-            href={pin.mediaUrl}
-            download
-            onClick={(e) => e.stopPropagation()}
-            className="p-2 bg-gray-200 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-          >
-            <FaDownload className="w-4 h-4 text-gray-800" />
-          </a>
-        </div>
-        {/* Bottom left corner user info */}
-        <div className="flex items-center space-x-2 text-white opacity-0 group-hover:opacity-100 transition-opacity">
-          <img src={pin.author.avatar || 'https://placehold.co/40x40/png'} alt="Author" className="w-8 h-8 rounded-full object-cover" />
-          <span className="font-semibold">{pin.author.username}</span>
-        </div>
       </div>
     </div>
   );

@@ -5,5 +5,9 @@ import com.example.blog.entity.Comment;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findByPinId(Long pinId);
+     List<Comment> findByPinId(Long pinId);
+    
+    // New method to count comments for a pin
+    long countByPinId(Long pinId);
+
 }

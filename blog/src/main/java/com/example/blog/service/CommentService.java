@@ -1,26 +1,22 @@
 package com.example.blog.service;
 
-import org.springframework.stereotype.Service;
 import com.example.blog.entity.Comment;
 import com.example.blog.entity.Pin;
 import com.example.blog.entity.User;
 import com.example.blog.repository.CommentRepository;
 import com.example.blog.repository.PinRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CommentService {
 
     private final CommentRepository commentRepository;
     private final PinRepository pinRepository;
-
-    public CommentService(CommentRepository commentRepository,
-                          PinRepository pinRepository) {
-        this.commentRepository = commentRepository;
-        this.pinRepository = pinRepository;
-    }
 
     public Comment addComment(User user, Long pinId, String text) {
         Pin pin = pinRepository.findById(pinId)
@@ -54,5 +50,31 @@ public class CommentService {
 
         comment.setText(newText);
         return commentRepository.save(comment);
+    }
+
+    public Comment getCommentById(Long commentId) {
+        return commentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
+    }
+
+    // Find pin by id, title, or category
+    public Pin findPinByIdOrTitleOrCategory(Long id, String title, String category) {
+        if (id != null) {
+            return pinRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Pin not found"));
+        } else if (title != null) {
+            return pinRepository.findFirstByTitle(title)
+                    .orElseThrow(() -> new RuntimeException("Pin not found"));
+        } else if (category != null) {
+            return pinRepository.findFirstByCategory(category)
+                    .orElseThrow(() -> new RuntimeException("Pin not found"));
+        } else {
+            throw new RuntimeException("Must provide id, title, or category");
+        }
+    }
+
+    // New method to count comments for a pin
+    public long countCommentsByPin(Long pinId) {
+        return commentRepository.countByPinId(pinId);
     }
 }

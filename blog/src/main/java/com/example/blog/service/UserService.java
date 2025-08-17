@@ -42,7 +42,7 @@ public class UserService {
         emailService.sendSimpleMessage(user.getEmail(),
                 "Email Verification",
                 "Please verify your email by clicking the link: " +
-                "http://localhost:8080/api/auth/verify?code=" + user.getVerificationCode());
+                "http://localhost:8081/api/auth/verify?code=" + user.getVerificationCode());
 
         return savedUser;
     }
@@ -119,4 +119,11 @@ public class UserService {
         follower.getFollowing().remove(followee);
         userRepository.save(follower);
     }
+    public void deleteUserByUsername(String username) {
+    User user = userRepository.findByUsername(username)
+            .orElseThrow(() -> new RuntimeException("User not found"));
+    userRepository.delete(user);
 }
+
+}
+

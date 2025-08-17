@@ -45,9 +45,7 @@ public class JwtUtil {
 
     public boolean validateToken(String token) {
         try {
-            if (isTokenBlacklisted(token)) {
-                return false;  // Token is blacklisted (logged out)
-            }
+            if (isTokenBlacklisted(token)) return false;
             Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
             return true;
         } catch (JwtException e) {

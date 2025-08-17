@@ -13,8 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
@@ -43,19 +43,21 @@ public class SecurityConfig {
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(authz -> authz
-                // Public share link endpoint (no auth)
+            .authorizeHttpRequests(auth -> auth
+                // Public endpoints
+                .requestMatchers("/api/auth/**").permitAll()   // login, register, verify
+                .requestMatchers("/uploads/**").permitAll()   // static media
+                .requestMatchers(HttpMethod.GET, "/api/pins/explore").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/pins/search").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/pins/*/share").permitAll()
-                // All other GET requests to /api/pins/** require auth
-                .requestMatchers(HttpMethod.GET, "/api/pins/**").authenticated()
-                // Public access to auth endpoints and uploads folder
-                .requestMatchers("/api/auth/**", "/uploads/**").permitAll()
-                // All other requests require auth
+                .requestMatchers(HttpMethod.GET, "/api/pins/*").permitAll()
+                
+                // All other requests require authentication
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        // Add JWT filter before username/password auth filter
+        // Add JWT filter
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -64,7 +66,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173"));  // React frontend URL
+        config.setAllowedOrigins(List.of("http://localhost:5173")); // React dev server
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);

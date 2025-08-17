@@ -7,9 +7,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PinService {
@@ -21,6 +27,7 @@ public class PinService {
         this.pinRepository = pinRepository;
     }
 
+    // Save a new pin
     public Pin savePin(User user, String title, String description, String category,
                        MultipartFile file) throws IOException {
 
@@ -36,7 +43,6 @@ public class PinService {
 
         String filename = UUID.randomUUID().toString() + ext;
         Path filepath = Paths.get(uploadDir, filename);
-
         Files.copy(file.getInputStream(), filepath, StandardCopyOption.REPLACE_EXISTING);
 
         String mediaType = file.getContentType() != null && file.getContentType().startsWith("video")
@@ -56,30 +62,74 @@ public class PinService {
         return pinRepository.save(pin);
     }
 
+    // Edit pin
+    public Pin editPin(User user, Long pinId, String title, String description, String category) {
+        Pin pin = pinRepository.findById(pinId)
+                .orElseThrow(() -> new RuntimeException("Pin not found"));
+
+        if (!pin.getAuthor().getId().equals(user.getId())) {
+            throw new RuntimeException("You cannot edit this pin");
+        }
+
+        if (title != null) pin.setTitle(title);
+        if (description != null) pin.setDescription(description);
+        if (category != null) pin.setCategory(category);
+
+        return pinRepository.save(pin);
+    }
+
+    // Delete pin
+    public void deletePin(User user, Long pinId) {
+        Pin pin = pinRepository.findById(pinId)
+                .orElseThrow(() -> new RuntimeException("Pin not found"));
+
+        if (!pin.getAuthor().getId().equals(user.getId())) {
+            throw new RuntimeException("You cannot delete this pin");
+        }
+
+        pinRepository.delete(pin);
+    }
+
+    // Get user's pins
+    public List<Pin> getPinsByUser(User user) {
+        return pinRepository.findByAuthor(user);
+    }
+
+    // Get all pins
     public List<Pin> getAllPins() {
         return pinRepository.findAll();
     }
 
+    // Get pins by category
+    public List<Pin> getPinsByCategory(String category) {
+        return pinRepository.findByCategoryIgnoreCase(category);
+    }
+
+    // Search pins by title
+    public List<Pin> searchPins(String search) {
+        return pinRepository.findByTitleContainingIgnoreCase(search);
+    }
+
+    // Search pins by category AND title
+    public List<Pin> searchPinsByCategory(String category, String search) {
+        return pinRepository.findByCategoryIgnoreCaseAndTitleContainingIgnoreCase(category, search);
+    }
+
+    // Get pin by ID
     public Optional<Pin> getPinById(Long id) {
         return pinRepository.findById(id);
     }
 
-    public void deletePin(Long id) {
-        pinRepository.deleteById(id);
-    }
+    public Map<String, String> generateShareLinks(Long pinId) {
+    String baseUrl = "http://localhost:8081"; // Change to deployed URL
+    String pinUrl = baseUrl + "/api/pins/" + pinId;
 
-    // Share links generator
-    public Map<String, String> generateShareLinks(Long pinId, String baseUrl) {
-        Pin pin = pinRepository.findById(pinId)
-                .orElseThrow(() -> new RuntimeException("Pin not found"));
+    Map<String, String> links = new HashMap<>();
+    links.put("copyLink", pinUrl);
+    links.put("whatsapp", "https://wa.me/?text=" + URLEncoder.encode(pinUrl, StandardCharsets.UTF_8));
+    links.put("facebook", "https://www.facebook.com/sharer/sharer.php?u=" + URLEncoder.encode(pinUrl, StandardCharsets.UTF_8));
 
-        String pinUrl = baseUrl + "/pins/" + pinId;
+    return links;
+}
 
-        Map<String, String> shareLinks = new HashMap<>();
-        shareLinks.put("whatsapp", "https://api.whatsapp.com/send?text=" + pinUrl);
-        shareLinks.put("facebook", "https://www.facebook.com/sharer/sharer.php?u=" + pinUrl);
-        shareLinks.put("link", pinUrl);
-
-        return shareLinks;
-    }
 }

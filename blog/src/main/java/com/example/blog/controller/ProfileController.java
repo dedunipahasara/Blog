@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -86,5 +88,39 @@ public class ProfileController {
 
         return ResponseEntity.ok(following);
     }
+
+    // ✅ Search users by username (partial match)
+    @GetMapping("/search")
+    public ResponseEntity<?> searchUsers(@RequestParam String username) {
+        List<User> users = userRepository.findByUsernameContainingIgnoreCase(username);
+        List<SimpleUserDto> result = users.stream()
+                .map(SimpleUserDto::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(result);
+    }
+
+    // ✅ Delete a user
+   @DeleteMapping("/username/{username}")
+public ResponseEntity<?> deleteUserByUsername(@PathVariable String username) {
+    userService.deleteUserByUsername(username);
+    return ResponseEntity.ok("User deleted successfully");
 }
 
+    @GetMapping("/{userId}/followers/count")
+    public ResponseEntity<?> getFollowersCount(@PathVariable Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return ResponseEntity.ok(Map.of("followersCount", user.getFollowers().size()));
+    }
+
+    @GetMapping("/{userId}/following/count")
+    public ResponseEntity<?> getFollowingCount(@PathVariable Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return ResponseEntity.ok(Map.of("followingCount", user.getFollowing().size()));
+    }
+
+
+}
