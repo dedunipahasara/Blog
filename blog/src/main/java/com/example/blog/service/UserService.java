@@ -41,7 +41,7 @@ public class UserService {
 
         emailService.sendSimpleMessage(user.getEmail(),
                 "Email Verification",
-                "Please verify your email by clicking the link: " +
+                "Please only copy the code and paste it in verify page Do not copy paste the link : " +
                 "http://localhost:8081/api/auth/verify?code=" + user.getVerificationCode());
 
         return savedUser;
