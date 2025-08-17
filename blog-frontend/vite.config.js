@@ -4,9 +4,10 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: './',
   server: {
     proxy: {
-      '/api': 'http://localhost:8080' // Replace with your Spring Boot server's address
+      '/api': 'http://localhost:8081' // Replace with your Spring Boot server's address
     }
   }
 })
