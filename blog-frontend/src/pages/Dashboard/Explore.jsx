@@ -6,9 +6,9 @@ export default function Explore() {
   const { pins, categories, fetchPins } = usePinStore();
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  // Fetch all pins on mount
+  // Fetch all pins initially
   useEffect(() => {
-    fetchPins(); // fetch all pins initially
+    fetchPins();
   }, []);
 
   // Refetch pins when category changes

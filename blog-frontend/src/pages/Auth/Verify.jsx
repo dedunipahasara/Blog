@@ -21,12 +21,12 @@ export default function Verify() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-100 to-purple-200 p-4">
-      <div className="bg-white/90 dark:bg-gray-900/80 backdrop-blur-md p-8 rounded-3xl shadow-2xl w-full max-w-md border border-gray-200 dark:border-gray-700">
-        <h2 className="text-2xl font-extrabold text-center text-purple-700 dark:text-purple-400 mb-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 to-green-300 p-6">
+      <div className="bg-white/30 backdrop-blur-md p-8 rounded-3xl shadow-2xl w-full max-w-md border border-white/30">
+        <h2 className="text-2xl font-extrabold text-center text-green-800 mb-4 drop-shadow-md">
           ✉️ Verify Your Account
         </h2>
-        <p className="text-center text-gray-600 dark:text-gray-300 mb-6">
+        <p className="text-center text-green-700 mb-6">
           Enter the verification code sent to your email.
         </p>
 
@@ -37,19 +37,22 @@ export default function Verify() {
             value={code}
             onChange={(e) => setCode(e.target.value)}
             required
-            className="w-full p-3 rounded-xl border-2 border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-400 dark:bg-gray-800 dark:text-gray-100 transition"
+            className="w-full p-4 rounded-2xl border-2 border-white/40 bg-white/20 text-green-900 placeholder-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all"
           />
           <button
             type="submit"
-            className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white font-semibold shadow-lg transition-all"
+            className="w-full py-3 rounded-2xl bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white font-bold shadow-lg transition-all transform hover:scale-105"
           >
             ✅ Verify
           </button>
         </form>
 
-        <p className="text-center text-gray-600 dark:text-gray-300 mt-4">
+        <p className="text-center text-green-800 mt-4 text-sm">
           Didn't receive the code?{" "}
-          <a href="/resend-verification" className="text-purple-600 dark:text-purple-400 font-medium hover:underline">
+          <a
+            href="/resend-verification"
+            className="font-medium underline hover:text-green-900"
+          >
             Resend
           </a>
         </p>
