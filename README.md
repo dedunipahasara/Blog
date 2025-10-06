@@ -371,10 +371,31 @@ json
   
 }
 
+sign up
+<img width="1905" height="1076" alt="Screenshot from 2025-10-06 20-38-41" src="https://github.com/user-attachments/assets/e0477fe9-56a7-4c68-953c-be59185104e4" />
+sign in
+<img width="1919" height="1079" alt="Screenshot from 2025-10-06 20-38-16" src="https://github.com/user-attachments/assets/d6fe5acf-ccc6-4685-9a59-4e2fdc7382cb" />
+feed
+<img width="1915" height="1078" alt="Screenshot from 2025-10-06 20-25-55" src="https://github.com/user-attachments/assets/6732bca2-99a5-419b-9c94-62c327f7da7d" />
+explore
+<img width="1919" height="1074" alt="Screenshot from 2025-10-06 20-35-36" src="https://github.com/user-attachments/assets/29397124-1455-40fd-a7b8-b96a291a457e" />
+view pins ,react to pin comment to pins
+<img width="1919" height="1077" alt="Screenshot from 2025-10-06 20-34-51" src="https://github.com/user-attachments/assets/b54f2356-227b-458a-b242-bf44be750f57" />
+upload a pin
+<img width="1915" height="1079" alt="Screenshot from 2025-10-06 20-35-15" src="https://github.com/user-attachments/assets/996688ae-8f3c-4f31-94a9-f116df65ea21" />
+view profile , user created pins
+<img width="1919" height="1065" alt="Screenshot from 2025-10-06 20-36-13" src="https://github.com/user-attachments/assets/1cbb6300-5e9a-42fc-88e8-08a5e881730a" />
+user reacted pins
+<img width="1919" height="1075" alt="Screenshot from 2025-10-06 20-36-33" src="https://github.com/user-attachments/assets/727ca543-9e72-42e4-9dd4-ae8deccc338f" />
+edit user profile
+<img width="1911" height="1079" alt="Screenshot from 2025-10-06 20-37-41" src="https://github.com/user-attachments/assets/fe24ed22-1290-4530-9da0-765857d135f7" />
 
-<img width="1915" height="985" alt="Screenshot from 2025-08-16 21-03-54" src="https://github.com/user-attachments/assets/277776c2-8de2-41f2-a552-607b616cd537" />
-<img width="1920" height="1080" alt="Screenshot from 2025-08-16 21-05-39" src="https://github.com/user-attachments/assets/59ec5622-2dbf-4100-a79d-ed4f672f8184" />
-<img width="1915" height="1073" alt="Screenshot from 2025-08-16 21-06-01" src="https://github.com/user-attachments/assets/160d3e91-94f3-4c9e-81f2-76dee2ee099f" />
-<img width="1920" height="1080" alt="Screenshot from 2025-08-16 21-07-44" src="https://github.com/user-attachments/assets/8f22068a-5763-4c1d-b8c0-81e6b155abe7" />
+
+
+
+
+
+
+
 
 
